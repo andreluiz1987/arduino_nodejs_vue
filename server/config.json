@@ -1,0 +1,4 @@
+{
+    "connectionString": "mongodb://andre:andre123@ds042138.mlab.com:42138/arduino_devices",
+    "port_usb": "/dev/ttyUSB0"
+} 

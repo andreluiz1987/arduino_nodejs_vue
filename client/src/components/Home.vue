@@ -32,34 +32,24 @@
 
   <div class="container-fluid">
     <div class="row content">
-      <div class="col-sm-4 text-center" style="background-color:#e1e1e1">
-        <h4 class="p-3">MEDIDORES</h4>
+      <div class="col-sm-4 text-center">
+        <h4 class="p-3">Medidores de Temperatura</h4>
 
-        <IEcharts ref="guage_room1" :option="gauge" style="width: 400px; height: 250px;"></IEcharts>
-        <div class="offset-md-1">
-          <strong>ROOM 01</strong>
-        </div>
 
-        <IEcharts ref="guage_room2" :option="gauge1" style="width: 400px; height: 250px;"></IEcharts>
-        <div class="offset-md-1">
-          <strong>ROOM 02</strong>
-        </div>
-      </div>
-
-      <div class="col-sm-8" style="background-color:#d7d7d7">
-        <div class="col text-right">
-          <img
-            width="180"
-            height="120"
-            src="../../static/images/parking.png"
-          >
-        </div>
-        <h4 class="p-3">GRÁFICO</h4>
-        <div class="row">
-          <div class="mt-2 mr-4 col">
-            <line-chart class="mt-4" :data="this.temperatures"></line-chart>
+        <div class="box alignment">
+          <IEcharts ref="guage_room1" :option="gauge" style="height: 220px;"></IEcharts>
+          <div class="gouge-detail">
+            <strong>ROOM 01</strong>
           </div>
         </div>
+
+        <div class="box alignment">
+          <IEcharts ref="guage_room2" :option="gauge1" style="height: 220px;"></IEcharts>
+          <div class="gouge-detail">
+            <strong>ROOM 02</strong>
+          </div>
+        </div>
+
         <div class="col">
           <img
             id="car"
@@ -70,24 +60,41 @@
             src="../../static/images/car_left.png"
           >
         </div>
-        <div class="col p-3">
-          <h4>LED 01</h4>
-          <button
-            type="button"
-            :class="this.blnState ? 'btn btn-success' : 'btn btn-danger'"
-            @click="turnOnOff()"
-          >{{this.blnState ? 'LIGADO' : 'DESLIGADO'}}</button>
+      </div>
+
+      <div class="col-sm-8" style="">
+        <div class="box alignment mt-3">
+          <h4 class="">Gráfico - Temperatura</h4>
+          <div class="row">
+            <div class="mt-2 mr-4 col">
+              <line-chart class="mt-4" :data="this.temperatures"></line-chart>
+            </div>
+          </div>
         </div>
-        <div class="col">
-          <h4>LED 01</h4>
-          <veeno
-            pipsy
-            class="mt-5"
-            v-model="sliderValue"
-            :handles="30"
-            @change="sliderPwmChanged(sliderValue)"
-            :range="{'min': 0,'max': 100}"
-          >{{ this.sliderValue }}</veeno>
+        <div class="box alignment pb-5">
+          <div class="col">
+            <button
+              type="button"
+              :class="this.blnState ? 'btn btn-success' : 'btn btn-danger'"
+              @click="turnOnOff()"
+            >{{this.blnState ? 'LED 1 - LIGADO' : 'LED 1 -  DESLIGADO'}}</button>
+            <veeno
+              pipsy
+              class="mt-5"
+              v-model="sliderValue"
+              :handles="30"
+              @change="sliderPwmChanged(sliderValue)"
+              :range="{'min': 0,'max': 100}"
+            >{{ this.sliderValue }}</veeno>
+          </div>
+        </div>
+        <div class="col text-right pt-4">
+          <img
+            class="rotate-img"
+            width="180"
+            height="120"
+            src="../../static/images/parking.png"
+          >
         </div>
       </div>
       
@@ -126,7 +133,7 @@ export default {
         },
         series: [
           {
-            name: "",
+            name: "Temperatura",
             type: "gauge",
             detail: { formatter: "{value}°C" },
             data: [{ value: 0, name: "" }]
@@ -241,4 +248,33 @@ export default {
 </script>
 
 <style>
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: #ebebeb !important;  
+    padding-top: 20px;
+  }
+
+  .box {
+    background: #f9f9f9;
+    box-shadow: 0 0 1px rgba(0,0,0,.2), 0 2px 4px rgba(0,0,0,.1);
+    border-radius: 5px;
+    margin-bottom: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,.1);
+  }
+
+  .alignment {
+    padding: 30px;  
+    text-align: -webkit-center;
+  }
+
+  .gouge-detail {
+    color: darkslategrey;
+  }
+
+  .rotate-img {
+    transform: rotate(90deg);
+  }
+
 </style>

@@ -10,8 +10,12 @@ const deviceSchema = new mongoose.Schema({
         type: String
     },
     temperatures: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'temperature'
+        value: {
+            type: Number
+        },
+        date_received: {
+            type: Date
+        },
     }]
 });
 

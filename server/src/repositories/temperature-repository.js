@@ -13,6 +13,7 @@ exports.getLastTemperature = async () => {
 }
 
 exports.create = async (data) => {
+    
     let temperature = new Temperature();
     temperature.value = data.value;
     temperature.device = data.device;

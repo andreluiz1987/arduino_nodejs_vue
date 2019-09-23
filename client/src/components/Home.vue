@@ -78,14 +78,14 @@
               :class="this.blnState ? 'btn btn-success' : 'btn btn-danger'"
               @click="turnOnOff()"
             >{{this.blnState ? 'LED 1 - LIGADO' : 'LED 1 -  DESLIGADO'}}</button>
-            <veeno
+            <!-- <veeno
               pipsy
               class="mt-5"
               v-model="sliderValue"
               :handles="30"
               @change="sliderPwmChanged(sliderValue)"
               :range="{'min': 0,'max': 100}"
-            >{{ this.sliderValue }}</veeno>
+            >{{ this.sliderValue }}</veeno> -->
           </div>
         </div>
         <div class="col text-right pt-4">
@@ -222,6 +222,7 @@ export default {
         this.devices = await this.statusController.getStatus();
 
         this.devices.data.forEach(element => {
+          debugger
           if (element.code == "SALA_CODE_123")
             this.gauge1.series[0].data[0].value = TemperatureHelper.formatterData(
               element.temperatures[0].value
@@ -237,7 +238,7 @@ export default {
     },
     async getStatusDevice() {
       try {
-        let deviceTemperatures = await this.statusController.getStatusDevice();
+        let deviceTemperatures = await this.statusController.getStatusDevice();        
         this.temperatures = deviceTemperatures.data;
       } catch (error) {
         console.log(error);

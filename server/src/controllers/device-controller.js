@@ -49,10 +49,9 @@ exports.getLastTemperatureByDeviceCode = async (req, res, next) => {
     }
 }
 
-exports.getLastTemperatureByDevice = async (req, res, next) => {
+exports.getLastTemperatures = async (req, res, next) => {
     try {
-
-        var data = await repo.getLastTemperatureByDevice();
+        var data = await repo.getLastTemperatures();
         res.status(200).json(data);
     } catch (e) {
         res.status(500).json({

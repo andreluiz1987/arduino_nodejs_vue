@@ -1,5 +1,3 @@
-require('console-stamp')(console, '[HH:MM:ss.l]');
-
 const app = require('../app');
 
 app.set('port', (process.env.PORT || 3005));

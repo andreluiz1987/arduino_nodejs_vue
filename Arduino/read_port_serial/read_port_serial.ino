@@ -1,4 +1,3 @@
-
 int sensorPinA0 = A3;
 int sensorPinA1 = A1;
 
@@ -12,8 +11,7 @@ int sensorValue = 0;
 int statebtn02 = 0;
 
 String dataSerialReceived = "";
-String response = "";
-String receivedChar = "";
+String dataAnalog = "";
 String strStatebtn02 = "";
 
 unsigned long currentMillis = 0;
@@ -34,72 +32,17 @@ void loop()
   currentMillis = millis();
 
   if (currentMillis - previousMillis > INTERVAL_VEHICLE)
-  {    
+  {
     previousVehicleMillis = currentMillis;
-    int s6 = analogRead(sensorPinA6);
-    int s5 = analogRead(sensorPinA5);
-
-    int map6 = map(s6, 0, 1023, 1, 180);
-    int map5 = map(s5, 0, 1023, 1, 180);
-
-    if (statebtn02 == 0)
-    {
-      strStatebtn02 = "";
-    }
-    else
-    {
-      strStatebtn02 = "LED_ON_";
-    }
-
-    if (map6 > 94 && map6 <= 180)
-    {
-      Serial.println(strStatebtn02 + "FRENTE");
-    }
-    else if (map6 > 0 && map6 < 85)
-    {
-      Serial.println(strStatebtn02 + "TRAS");
-    }
-    else if (map5 > 90 && map5 <= 180)
-    {
-      Serial.println(strStatebtn02 + "ESQUERDA");
-    }
-    else if (map5 > 0 && map5 < 85)
-    {
-      Serial.println(strStatebtn02 + "DIREITA");
-    }
-    else
-    {
-      Serial.println(strStatebtn02 + "PARADO");
-    }
-
-    if (digitalRead(input02) == LOW)
-    {
-      if (statebtn02 == false)
-      {
-        digitalWrite(ledPin, HIGH);
-        statebtn02 = 1;
-      }
-      else if (statebtn02 == true)
-      {
-        digitalWrite(ledPin, LOW);
-        statebtn02 = 0;
-      }
-    }
+    
+    moveVehicle();
+    actionLed();
   }
 
   if (currentMillis - previousMillis > INTERVAL)
   {
     previousMillis = currentMillis;
-    sensorValue = analogRead(sensorPinA0);
-    Serial.print("SALA_CODE_123:");
-    Serial.print(sensorValue);
-
-    sensorValue = analogRead(sensorPinA1);
-    Serial.print(";SALA_CODE_456:");
-    Serial.println(sensorValue);
-
-    Serial.println(response);
-    response = "";
+    readSensor();
   }
 
   if (Serial.available() > 0)
@@ -115,15 +58,74 @@ void loop()
     {
       digitalWrite(ledPin, LOW);
     }
+  }
+}
 
-    if (dataSerialReceived.startsWith("PWM_") >= 0)
+void readSensor()
+{
+  sensorValue = analogRead(sensorPinA0);
+
+  Serial.print("SALA_CODE_123:");
+  Serial.print(sensorValue);
+  sensorValue = analogRead(sensorPinA1);
+  Serial.print(";SALA_CODE_456:");
+  Serial.println(sensorValue);
+}
+
+void actionLed()
+{
+  if (digitalRead(input02) == LOW)
+  {
+    if (statebtn02 == false)
     {
-      String strValue = dataSerialReceived.substring(dataSerialReceived.length(), dataSerialReceived.indexOf("_") + 1);
-      Serial.println(strValue);
-      int value = atoi(strValue.c_str());
-      int valueMap = map(value, 0, 100, 0, 255);
-      analogWrite(ledPin, valueMap);
+      digitalWrite(ledPin, HIGH);
+      statebtn02 = 1;
     }
+    else if (statebtn02 == true)
+    {
+      digitalWrite(ledPin, LOW);
+      statebtn02 = 0;
+    }
+  }
+}
+
+void moveVehicle()
+{
+
+  int s6 = analogRead(sensorPinA6);
+  int s5 = analogRead(sensorPinA5);
+
+  int map6 = map(s6, 0, 1023, 1, 180);
+  int map5 = map(s5, 0, 1023, 1, 180);
+
+  if (statebtn02 == 0)
+  {
+    strStatebtn02 = "";
+  }
+  else
+  {
+    strStatebtn02 = "LED_ON_";
+  }
+
+  if (map6 > 94 && map6 <= 180)
+  {
+    Serial.println(strStatebtn02 + "FRENTE");
+  }
+  else if (map6 > 0 && map6 < 85)
+  {
+    Serial.println(strStatebtn02 + "TRAS");
+  }
+  else if (map5 > 90 && map5 <= 180)
+  {
+    Serial.println(strStatebtn02 + "ESQUERDA");
+  }
+  else if (map5 > 0 && map5 < 85)
+  {
+    Serial.println(strStatebtn02 + "DIREITA");
+  }
+  else
+  {
+    Serial.println(strStatebtn02 + "PARADO");
   }
 }
 

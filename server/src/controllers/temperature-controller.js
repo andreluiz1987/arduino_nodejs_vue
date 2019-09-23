@@ -48,29 +48,10 @@ exports.saveTemperature = async (data) => {
             let deviceCode = element.split(':')[0];
             let temperatureValue = element.split(':')[1];
 
-            let device = await deviceRepo.getDeviceByCode(deviceCode);
-
-            if (device == undefined) {
-                device = await deviceRepo.create(deviceCode)
-            }
-
-            let temperature = {
-                value: temperatureValue,
-                device: device._id
-            }
-
-            var data = await repo.create(temperature);
-
-            if (data._id) {
-                console.log(">>>>> TEMPERATURA INSERIDA: ", data)
-                device.temperatures.push(data)
-                device.save();
-            } else {
-                console.log("TEMPERATURA NAO REGISTRADA")
-            }
+            deviceRepo.updateTemperatures(deviceCode, temperatureValue);
+            console.log(">>>>> TEMPERATURA INSERIDA: ", data)
         });
     } catch (e) {
-        console.log(e)
-        console.log("Falha ao registrar a temperatura.");
+        console.log("Falha ao registrar a temperatura.", e);
     }
 }

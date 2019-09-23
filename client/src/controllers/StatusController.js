@@ -12,7 +12,7 @@ export default
             let result;
             try {
                 let response = await this._resource(`devices/temperatures`).get()
-
+                
                 if (response.ok) {
                     result = {
                         ok: response.ok,

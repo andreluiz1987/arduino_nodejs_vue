@@ -15,16 +15,16 @@ exports.getLastTemperatureByDeviceCode = async (code) => {
         code: code
     },
         { temperatures: { $slice: -5} }
-    ).populate('temperatures');
+    );
 
     return res;
 }
 
-exports.getLastTemperatureByDevice = async (code) => {
+exports.getLastTemperatures = async () => {
     let res = await Device.find({
     },
         { temperatures: { $slice: -1 } }
-    ).populate('temperatures');
+    );
 
     return res;
 }
@@ -42,5 +42,22 @@ exports.create = async (data) => {
 
     let response = await device.save();
 
+    return response;
+};
+
+exports.updateTemperatures = async (deviceCode, temperature) => {
+    let device = await this.getDeviceByCode(deviceCode);   
+    
+    if(!device){
+        device = await this.create(deviceCode)
+    }
+    
+    let temp = new Object();
+    temp.value = temperature;
+    temp.date_received = new Date();
+
+    device.temperatures.push(temp)
+    
+    let response = await device.save();
     return response;
 };

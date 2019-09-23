@@ -10,7 +10,7 @@ router.get('/devices', controller.getDevices);
 
 router.get('/devices/:code/temperatures', controller.getLastTemperatureByDeviceCode);
 
-router.get('/devices/temperatures', controller.getLastTemperatureByDevice);
+router.get('/devices/temperatures', controller.getLastTemperatures);
 
 router.post('/devices/turn-on-off/:state', controller.turnOnOff);
 

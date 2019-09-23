@@ -1,5 +1,6 @@
 const serialport = require('serialport');
 const Readline = serialport.parsers.Readline;
+
 const controller = require('../controllers/temperature-controller');
 const vehiclecontroller = require('../controllers/vehicle-controller');
 const config = require('../../config.json');
@@ -24,6 +25,7 @@ function init() {
 function onData(data) {
     
     if (data.indexOf("SALA") >= 0) {
+        console.log("received: ", data);
         controller.saveTemperature(data);
     } else {
         vehiclecontroller.setDirectionCar(data);
@@ -31,11 +33,11 @@ function onData(data) {
 }
 
 function onOpen() {
-    console.log("serial port open");
+    console.log("port serial open");
 }
 
 function onClose() {
-    console.log("serial port close");
+    console.log("port serial close");
     port = null;
     parser = null;
 }

@@ -64,9 +64,9 @@ void loop()
 void readSensor()
 {
   sensorValue = analogRead(sensorPinA0);
-
   Serial.print("SALA_CODE_123:");
   Serial.print(sensorValue);
+
   sensorValue = analogRead(sensorPinA1);
   Serial.print(";SALA_CODE_456:");
   Serial.println(sensorValue);

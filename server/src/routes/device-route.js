@@ -1,22 +1,10 @@
 'use strict'
 
 const express = require('express');
-const router = express.Router();
-
 const controller = require('../controllers/device-controller');
-const vehicleController = require('../controllers/vehicle-controller');
 
-router.get('/devices', controller.getDevices);
-
-router.get('/devices/:code/temperatures', controller.getLastTemperatureByDeviceCode);
-
-router.get('/devices/temperatures', controller.getLastTemperatures);
-
-router.post('/devices/turn-on-off/:state', controller.turnOnOff);
-
-router.post('/devices/pwm/:value', controller.setPWMLed);
-
-router.get('/vehicle/direction', vehicleController.getCarPosition);
+let router = express.Router();
+router.use('/devices', controller);
 
 module.exports = router
 

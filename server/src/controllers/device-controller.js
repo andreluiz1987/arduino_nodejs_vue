@@ -1,91 +1,18 @@
 'use scrict'
 
-const repo = require('../repositories/device-repository');
-const serialService = require('../services/portserial-service');
+const express = require('express');
+const deviceService = require('../services/device-service')
 
-exports.getDevices = async (req, res, next) => {
+let router = express.Router();
 
-    try {
-        var data = await repo.getDevices();
-        res.status(200).json(data);
-    } catch (e) {
-        res.status(500).json({
-            message: "Falha ao recuperar devices."
-        });
-    }
-};
+router.get('/', deviceService.getDevices);
 
-exports.getDevicesByCode = async (code) => {
-    try {
-        var data = await repo.getDeviceByCode(code);
-        res.status(200).json(data);
-    } catch (e) {
-        res.status(500).json({
-            message: "Falha ao recuperar device."
-        });
-    }
-}
+router.get('/:code/temperatures', deviceService.getLastTemperatureByDeviceCode);
 
-exports.getLastTemperatureByDeviceCode = async (req, res, next) => {
-    try {
-        var data = await repo.getLastTemperatureByDeviceCode(req.params.code);
-        res.status(200).json(data);
-    } catch (e) {
-        res.status(500).json({
-            message: "Falha ao recuperar device."
-        });
-    }
-}
+router.get('/temperatures', deviceService.getDevicesTemperatures);
 
-exports.getLastTemperatureByDeviceCode = async (req, res, next) => {
-    try {
+router.post('/turn-on-off/:state', deviceService.turnOnOff);
 
-        var data = await repo.getLastTemperatureByDeviceCode(req.params.code);
-        res.status(200).json(data);
-    } catch (e) {
-        res.status(500).json({
-            message: "Falha ao recuperar device."
-        });
-    }
-}
+router.post('/pwm/:value', deviceService.setPWMLed);
 
-exports.getLastTemperatures = async (req, res, next) => {
-    try {
-        var data = await repo.getLastTemperatures();
-        res.status(200).json(data);
-    } catch (e) {
-        res.status(500).json({
-            message: "Falha ao recuperar device."
-        });
-    }
-}
-
-exports.turnOnOff = (req, res, next) => {
-    try {
-        let state = (req.params.state == 'true') ? "TURN_ON" : "TURN_OFF";
-        serialService.writeData(state);
-        res.status(200).json({
-            message: state
-        });
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({
-            message: "Falha ao recuperar device."
-        });
-    }
-}
-
-exports.setPWMLed = (req, res, next) => {
-    try {
-        let value = req.params.value;
-        serialService.writeData(`PWM_${value}`);
-        res.status(200).json({
-            message: value
-        });
-    } catch (e) {
-        console.log(e)
-        res.status(500).json({
-            message: "Falha ao enviar o valor para o device."
-        });
-    }
-}
+module.exports = router;

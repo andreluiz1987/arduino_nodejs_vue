@@ -118,6 +118,7 @@ export default
         let result;
         try {
             let response = await this._resource(`vehicle/direction`).get()
+            
             if (response.ok) {
                 result = {
                     ok: response.ok,

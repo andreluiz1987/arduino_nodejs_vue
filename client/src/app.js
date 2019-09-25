@@ -17,7 +17,7 @@ Vue.use(VueChartkick, {adapter: Chart})
 Vue.use(VueResource);
 
 //VUE RESOURCES
-Vue.http.options.root = `${Config.host}/api/v1`;
+Vue.http.options.root = `${Config.host}/api`;
 Vue.config.productionTip = false
 
 new Vue({

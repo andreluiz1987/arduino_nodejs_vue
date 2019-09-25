@@ -20,7 +20,7 @@ exports.getLastTemperatureByDeviceCode = async (code) => {
     return res;
 }
 
-exports.getLastTemperatures = async () => {
+exports.getDevicesTemperatures = async () => {
     let res = await Device.find({
     },
         { temperatures: { $slice: -1 } }

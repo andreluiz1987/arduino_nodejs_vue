@@ -168,7 +168,8 @@ export default {
     async getCarPosition() {
       let response = await this.statusController.getCarPosition();
 
-      if(response.ok){
+      if(response.ok && response.data != 0){
+        
         let direction = response.data.trim();
 
         if (direction.indexOf("FRENTE") >= 0) {
@@ -222,7 +223,7 @@ export default {
         this.devices = await this.statusController.getStatus();
 
         this.devices.data.forEach(element => {
-          debugger
+          
           if (element.code == "SALA_CODE_123")
             this.gauge1.series[0].data[0].value = TemperatureHelper.formatterData(
               element.temperatures[0].value
